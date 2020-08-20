@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -8,15 +7,53 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import( '../views/posts/Index.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/posts',
+    name: 'Post',
+    component: {
+      render(c) { return c('router-view') }
+    },
+    children: [
+      {
+        path: '/',
+        meta: {},
+        name: 'postIndex',
+        component: () => import(
+          `@/views/posts/Index.vue`
+        )
+      },
+      {
+        path: 'create',
+        meta: {},
+        name: 'postCreate',
+        component: () => import(
+          `@/views/posts/Create.vue`
+        )
+      },
+      {
+        path: 'edit/:id',
+        meta: {},
+        name: 'postEdit',
+        component: () => import(
+          `@/views/posts/Edit.vue`
+        )
+      },
+      {
+        path: ':id',
+        meta: {},
+        name: 'postShow',
+        component: () => import(
+          `@/views/posts/Show.vue`
+        )
+      },
+    ],
+  },
+  {
+    path: '/galleries',
+    name: 'Gallery',
+    component: () => import('../views/galleries/Index.vue')
   }
 ]
 
